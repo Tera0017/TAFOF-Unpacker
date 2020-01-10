@@ -76,7 +76,6 @@ class TA505Decoder:
                             self.config['mem_out_counter'] += 1
                             self.decrypted_exec += ['\x00']
                         else:
-                            # var_14 is getting from mem so it will be wrong in this case TODO
                             self.decrypted_exec += [self.decrypted_exec[self.config['mem_out_counter'] - self.config['var_14']]]
                             self.config['mem_out_counter'] += 1
                         self.config['var_4'] = 0
