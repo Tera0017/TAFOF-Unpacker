@@ -63,6 +63,7 @@ class TA505Unpacker:
                 if 'x86' in extracted_bin:
                     self.fullpath = extracted_bin
                     self.filename = os.path.basename(extracted_bin)
+                message('Extracted TA505 binary from XLS: {}'.format(extracted_bin))
         message('Starting TA505 Unpacker')
         self.decrypt()
 
