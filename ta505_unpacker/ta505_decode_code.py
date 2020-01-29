@@ -1,11 +1,9 @@
 """
 Author:@Tera0017
 """
-import yara
 import json
 import struct
 from ta505_gen_funcs import *
-from ta505_get_exec_xor import rules, tmp_rule
 
 
 class TA505Decoder:
@@ -147,6 +145,5 @@ class TA505Decoder:
     def decode_code(self):
         self.decode_layer1()
         message("Decrypted TA505 First Layer")
-        #print self.encoded_layer1[:200]
         self.decode_layer2()
         return ''.join(self.decrypted_exec)
