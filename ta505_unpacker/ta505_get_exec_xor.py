@@ -127,6 +127,27 @@ class TA505Packer:
             counter += 1
         return enc_exec_code
 
+    def get_second_key(self):
+        xor_key_addr, exec_addr = self.find_exec_xor_addr()
+        pe = pefile.PE(data=self.file_data)
+        exec_addr -= 1000
+        for i in range(0, 4000):
+            exec_addr -= 1
+            op_codes = struct.pack('I', exec_addr)
+            try:
+                encoded_addr = self.file_data.index(op_codes)
+            except ValueError:
+                continue
+
+            mv1 = pe.get_data(rva=encoded_addr - 3, length=2)
+            mv2 = pe.get_data(rva=encoded_addr - 6, length=2)
+            mv3 = pe.get_data(rva=encoded_addr - 2, length=1)
+            mv3 = int(mv3.encode('hex'), 16)
+            if mv1 in ['\xC7\x45', '\xC7\x05'] or mv2 == '\xC7\x85' or mv3 in range(0x88, 0x8f):
+                exec_addr -= pe.OPTIONAL_HEADER.ImageBase
+                return struct.unpack('I', pe.get_data(rva=exec_addr - 4, length=4))[0]
+        raise Exception('Tried 2 XOR Keys None worked')
+
     def get_exec_xor(self):
         xor_key_addr, exec_addr = self.find_exec_xor_addr()
         if not exec_addr and not xor_key_addr:
