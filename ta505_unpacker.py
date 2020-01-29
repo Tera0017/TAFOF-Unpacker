@@ -38,8 +38,19 @@ class TA505Unpacker:
         message('Found XOR KEY: {}'.format(hex(xor_key).upper()))
         message('Layer One encryption: {}'.format(layer1_enc))
 
-        ta505decoder = TA505Decoder(encoded_exec_code, xor_key, layer1_enc)
-        exec_code = ta505decoder.decode_code()
+        flag_sec_key = False
+        while True:
+            try:
+                ta505decoder = TA505Decoder(encoded_exec_code, xor_key, layer1_enc)
+                exec_code = ta505decoder.decode_code()
+                break
+            except IndexError:
+                if not flag_sec_key:
+                    flag_sec_key = True
+                    xor_key = ta505pacer.get_second_key()
+                    message('Using Secondary XOR KEY: {}'.format(hex(xor_key).upper()))
+                else:
+                    raise Exception('Tried 2 XOR Keys None worked')
 
         # unpacked TA505 packer file
         unpacked_name = self.gen_name()
@@ -71,4 +82,3 @@ class TA505Unpacker:
 if __name__ == '__main__':
     ta505_unpacker = TA505Unpacker(process_args())
     ta505_unpacker.unpack()
-
