@@ -95,6 +95,11 @@ $ python ta505_unpacker.py -uf tafof_silence.bin
 ![](ta505_gifs/TAFOF_silence.gif)
 
 
+#### Requirements
+- yara-python
+- pefile
+- UPX
+
 
 ### Support
 
