@@ -20,13 +20,35 @@ class TA505Unpacker:
         self.xls = arguments.xls
 
     def gen_name(self, extr=''):
-        return '{}TA505{}_unpacker_{}'.format(self.folder, extr, self.filename)
+        return '{}TAFOF{}_unpacker_{}'.format(self.folder, extr, self.filename)
 
-    def unpack_upx(self, unp_name):
+    @staticmethod
+    def check_upx(unp_name):
         FNULL = open(os.devnull, 'w')
-        return subprocess.call(["upx", "-d", unp_name, "-o", self.gen_name('_UPX')], stdout=FNULL, stderr=subprocess.STDOUT)
+        return subprocess.call(["upx", "-t", unp_name], stdout=FNULL, stderr=subprocess.STDOUT)
+
+    def unpack_upx(self, unp_name, layer):
+        FNULL = open(os.devnull, 'w')
+        return subprocess.call(["upx", "-d", unp_name, "-o", self.gen_name('_UPX{}'.format(layer))], stdout=FNULL, stderr=subprocess.STDOUT)
+
+    def check_unpack_upx(self, filename, layer=2):
+        # usually its also packed with UPX, needs to have UPX in the system
+        # check if sample is packed with UPX
+        if self.check_upx(filename) == 0:
+            # 0: 'unpacked', 1: 'already_exists', '2': 'did not unpack'
+            if self.unpack_upx(filename, layer) != 2:
+                new_filename = self.gen_name('_UPX{}'.format(layer))
+                message('Unpacked TA505 UPX Layer {}: {}'.format(layer, new_filename))
+                if layer == 1:
+                    self.fullpath = new_filename
+                    self.filename = os.path.basename(new_filename)
+                return True
+        return False
 
     def decrypt(self):
+        # Observed UPX_layer1(TA505(UPX_layer2(binary))) method
+        self.check_unpack_upx(self.fullpath, layer=1)
+
         ta505pacer = TA505Packer(readFile(self.fullpath))
         message('Loaded Packed Exe Data: {}'.format(self.filename))
 
@@ -59,9 +81,7 @@ class TA505Unpacker:
 
         if self.upx:
             # usually its also packed with UPX, needs to have UPX in the system
-            # 0: 'unpacked', 1: 'already_exists', '2': 'did not unpack'
-            if self.unpack_upx(unpacked_name) != 2:
-                message('Unpacked TA505 UPX: {}'.format(self.gen_name('_UPX')))
+            self.check_unpack_upx(unpacked_name, layer=2)
             message('Unpacked Successfully')
         else:
             message('*Possibly needs to be unpacked with UPX as well try -u/--upx/-uf')
