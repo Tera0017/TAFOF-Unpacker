@@ -14,7 +14,7 @@ class TA505XLSExtractor:
         self.folder = fullpath.replace(self.filename, "")
 
     def gen_name(self, extr=''):
-        return '{}TA505_XLS_bin_{}_{}.bin'.format(self.folder, extr, self.filename)
+        return '{}TAFOF_XLS_bin_{}_{}.bin'.format(self.folder, extr, self.filename)
 
     @staticmethod
     def get_size(file_data):
