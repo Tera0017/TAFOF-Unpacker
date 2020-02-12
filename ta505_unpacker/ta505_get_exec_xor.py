@@ -18,7 +18,7 @@ rules = {
     # // Getting directly code and size
     '$code5': '{89 [2] C7 45 ?? [4] C7 45 ?? [4] 8? 15 [4] 8?}',
     # // check which code decrypts code (which usually is the same as exec layer 1)
-    '$code6': '{E8 03 00 00 89 [2] C1 [2] FF FF FF 07}',
+    '$code6': '{E8 03 00 00 89 [2] C1 [2] (FF| FE) FF FF 07}',
     # Find encoded code PART 1 + length the can find exec code and xor key
     '$code7': '{F4 0B 00 00 [2] 8? [11] 8? ?? [4] 8? ?? EB}'
 
