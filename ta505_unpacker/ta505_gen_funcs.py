@@ -2,7 +2,7 @@
 """
 Author:@Tera0017
 """
-ERROR01 = 'Yara rules didn\'t match encoded code or more than 1. Make super is packed with TA505 else DM hash @Tera0017'
+ERROR01 = 'Yara rules didn\'t match encoded code or more than 1. Make sure is packed with TA505 else DM hash @Tera0017'
 
 
 def readFile(filename):
