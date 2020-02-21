@@ -20,7 +20,9 @@ rules = {
     # // check which code decrypts code (which usually is the same as exec layer 1)
     '$code6': '{E8 03 00 00 89 [2] C1 [2] (FF| FE) FF FF 07}',
     # Find encoded code PART 1 + length the can find exec code and xor key
-    '$code7': '{F4 0B 00 00 [2] 8? [11] 8? ?? [4] 8? ?? EB}'
+    '$code7': '{F4 0B 00 00 [2] 8? [11] 8? ?? [4] 8? ?? EB}',
+    # 21.2.20 update
+    '$code8': '{81 [2] ?? ?? 00 00 7? [10] 8A ?? ?? ?? ?? ?? 8? 0? EB}',
 
 }
 
@@ -91,6 +93,15 @@ class TA505Packer:
                 encoded_code_addr = struct.unpack('I', opcodes[20: 20 + 4])[0]
                 size = struct.unpack('I', opcodes[0: 4])[0]
                 xor_key_addr = encoded_code_addr + size
+                executable_addr = xor_key_addr + 4
+                return xor_key_addr, executable_addr
+
+        # gets code after update 21.2.20
+        for rule in ['$code8']:
+            match = self.match_rule(rule)
+            if match and len(match) == 1:
+                opcodes = match[0].strings[0][2]
+                xor_key_addr = struct.unpack('I', opcodes[20: 20 + 4])[0] + struct.unpack('I', opcodes[3: 3 + 4])[0]
                 executable_addr = xor_key_addr + 4
                 return xor_key_addr, executable_addr
 
