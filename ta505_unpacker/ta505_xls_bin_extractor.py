@@ -33,7 +33,9 @@ class TA505XLSExtractor:
     def extract_binaries(self):
         extract = True
         xls_data = readFile(self.fullpath)
-        st = xls_data.index('MZ')
+        st = xls_data[2:].index('MZ') + 2
+        counter = 0
+        paths = []
         while extract:
             try:
                 mz_data = xls_data[st:]
@@ -43,28 +45,22 @@ class TA505XLSExtractor:
                 start = st
                 end = start + total_size
                 mz_data = xls_data[start:end]
+                counter += 1
                 if self.get_osa(mz_data) == 0x32:
-                    x86_path = self.gen_name('x86')
-                    writeFile(x86_path, mz_data)
+                    path = self.gen_name('x86_{}'.format(counter))
                 else:
-                    x64_path = self.gen_name('x64')
-                    writeFile(x64_path, mz_data)
-
-                # second binary x64
-                start2 = end + xls_data[end:].index('MZ')
-                mz_data2 = xls_data[start2:]
-                total_size = self.get_size(mz_data2)
-                end2 = end + xls_data[end:].index('MZ') + total_size
-                mz_data2 = xls_data[end + xls_data[end:].index('MZ'): end2]
-                if self.get_osa(mz_data2) == 0x64:
-                    x64_path = self.gen_name('x64')
-                    writeFile(x64_path, mz_data2)
-                else:
-                    x86_path = self.gen_name('x86')
-                    writeFile(x86_path, mz_data)
-
-                extract = False
-            except pefile.PEFormatError:
+                    path = self.gen_name('x64_{}'.format(counter))
+                writeFile(path, mz_data)
+                paths.append(path)
                 st = st + xls_data[st + 2:].index('MZ') + 2
-
-        return x86_path, x64_path
+            except pefile.PEFormatError:
+                try:
+                    st = st + xls_data[st + 2:].index('MZ') + 2
+                except ValueError:
+                    break
+            except ValueError:
+                print 'Extracted samples {}'.format(counter)
+                break
+        if len(paths) != 2:
+            print 'Samples extracted from XLS {}'.format(len(paths))
+        return paths
