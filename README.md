@@ -36,7 +36,7 @@ optional arguments:
   -u, --upx             UPX decryption to final payload, default to False.
 ```
 
-#### Example 1: GetandGoDLL from XLS file.
+#### Example 1.1: GetandGoDLL from XLS file.
 ```
 $ python ta505_unpacker.py -uxf tafof_xls_getandgodll.xls 
 ▄▄▄█████▓▄▄▄       █████▒█████   █████▒    █    ██ ███▄    █ ██▓███  ▄████▄  ██ ▄█▀██▀███  
@@ -66,6 +66,45 @@ $ python ta505_unpacker.py -uxf tafof_xls_getandgodll.xls
 ```
 
 ![](ta505_gifs/TAFOF_getandgodll_xls.gif)
+
+#### Example 1.2: GetandGoDLL from XLS file (updated version x86/x64).
+
+$ python ta505_unpacker.py -uxf tafof_xls_getandgodll.xls
+▄▄▄█████▓▄▄▄       █████▒█████   █████▒    █    ██ ███▄    █ ██▓███  ▄████▄  ██ ▄█▀██▀███
+▓  ██▒ ▓▒████▄   ▓██   ▒██▒  ██▓██   ▒     ██  ▓██▒██ ▀█   █▓██░  ██▒██▀ ▀█  ██▄█▒▓██ ▒ ██▒
+▒ ▓██░ ▒▒██  ▀█▄ ▒████ ▒██░  ██▒████ ░    ▓██  ▒██▓██  ▀█ ██▓██░ ██▓▒▓█    ▄▓███▄░▓██ ░▄█ ▒
+░ ▓██▓ ░░██▄▄▄▄██░▓█▒  ▒██   ██░▓█▒  ░    ▓▓█  ░██▓██▒  ▐▌██▒██▄█▓▒ ▒▓▓▄ ▄██▓██ █▄▒██▀▀█▄
+  ▒██▒ ░ ▓█   ▓██░▒█░  ░ ████▓▒░▒█░       ▒▒█████▓▒██░   ▓██▒██▒ ░  ▒ ▓███▀ ▒██▒ █░██▓ ▒██▒
+  ▒ ░░   ▒▒   ▓▒█░▒ ░  ░ ▒░▒░▒░ ▒ ░       ░▒▓▒ ▒ ▒░ ▒░   ▒ ▒▒▓▒░ ░  ░ ░▒ ▒  ▒ ▒▒ ▓░ ▒▓ ░▒▓░
+    ░     ▒   ▒▒ ░░      ░ ▒ ▒░ ░         ░░▒░ ░ ░░ ░░   ░ ▒░▒ ░      ░  ▒  ░ ░▒ ▒░ ░▒ ░ ▒░
+  ░       ░   ▒   ░ ░  ░ ░ ░ ▒  ░ ░        ░░░ ░ ░   ░   ░ ░░░      ░       ░ ░░ ░  ░░   ░
+              ░  ░         ░ ░               ░             ░        ░ ░     ░  ░     ░
+                                                                    ░
+|--> TA505 Unpacker.
+|--> Extracting binaries from XLS.
+|--> Extracted TA505 binary from XLS: TAFOF_XLS_bin_x86_1_tafof_xls_getandgodll.xls.bin
+|--> Extracted TA505 binary from XLS: TAFOF_XLS_bin_x64_2_tafof_xls_getandgodll.xls.bin
+|--> Starting TA505 x86 Unpacker
+|--> Loaded Packed Exe Data: TAFOF_XLS_bin_x86_1_tafof_xls_getandgodll.xls.bin
+|--> Encrypted Layer One size: 0X3C960
+|--> Found Encrypted Code
+|--> Found XOR KEY: 0X79AA
+|--> Layer One encryption: rol_4
+|--> Decrypted TA505 First Layer
+|--> Unpacked TA505 x86: TAFOF_unpacker_TAFOF_XLS_bin_x86_1_tafof_xls_getandgodll.xls.bin
+|--> Unpacked TA505 UPX Layer 2: TAFOF_UPX2_unpacker_TAFOF_XLS_bin_x86_1_tafof_xls_getandgodll.xls.bin
+|--> Unpacked x86 Successfully
+|--> Starting TA505 x64 Unpacker
+|--> Unpacked TA505 UPX Layer 1: TAFOF_UPX1_unpacker_TAFOF_XLS_bin_x64_2_tafof_xls_getandgodll.xls.bin
+|--> Loaded Packed Exe Data: TAFOF_UPX1_unpacker_TAFOF_XLS_bin_x64_2_tafof_xls_getandgodll.xls.bin
+|--> Encrypted Layer One size: 0X34FB0
+|--> Found Encrypted Code
+|--> Found XOR KEY: 0X7D74
+|--> Layer One encryption: rol_7
+|--> Decrypted TA505 First Layer
+|--> Unpacked TA505 x64: TAFOF_unpacker_TAFOF_UPX1_unpacker_TAFOF_XLS_bin_x64_2_tafof_xls_getandgodll.xls.bin
+|--> Unpacked x64 Successfully
+
 
 #### Example 2: Silence.
 ```
