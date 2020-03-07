@@ -1,7 +1,7 @@
 TAFOF Unpacker
 ==============
 
-TA505 Unpacker is a python 2.7 script that is able to unpack statically, x86 TA505 packed samples.
+TA505 Unpacker is a python 2.7 script that is able to unpack statically, x86 and X64 TA505 packed samples.
 
 Currently malware spotted to be packed with that packer:
 - GetandGoDll
@@ -106,4 +106,5 @@ $ python ta505_unpacker.py -uf tafof_silence.bin
 In case some files are not working, please make sure its packed with TA505 packer, if yes please provide me the hash in a DM @Tera0017.
 
 Regards
+
 
