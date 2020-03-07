@@ -69,6 +69,7 @@ $ python ta505_unpacker.py -uxf tafof_xls_getandgodll.xls
 
 #### Example 1.2: GetandGoDLL from XLS file (updated version x86/x64).
 
+```
 $ python ta505_unpacker.py -uxf tafof_xls_getandgodll.xls
 ▄▄▄█████▓▄▄▄       █████▒█████   █████▒    █    ██ ███▄    █ ██▓███  ▄████▄  ██ ▄█▀██▀███
 ▓  ██▒ ▓▒████▄   ▓██   ▒██▒  ██▓██   ▒     ██  ▓██▒██ ▀█   █▓██░  ██▒██▀ ▀█  ██▄█▒▓██ ▒ ██▒
@@ -104,7 +105,7 @@ $ python ta505_unpacker.py -uxf tafof_xls_getandgodll.xls
 |--> Decrypted TA505 First Layer
 |--> Unpacked TA505 x64: TAFOF_unpacker_TAFOF_UPX1_unpacker_TAFOF_XLS_bin_x64_2_tafof_xls_getandgodll.xls.bin
 |--> Unpacked x64 Successfully
-
+```
 
 #### Example 2: Silence.
 ```
