@@ -64,10 +64,10 @@ class TA505Unpacker:
         # Observed UPX_layer1(TA505(UPX_layer2(binary))) method
         self.check_unpack_upx(self.fullpath, layer=1)
 
-        ta505pacer = packer(readfile(self.fullpath))
+        ta505packer = packer(readfile(self.fullpath))
         message('Loaded Packed Exe Data: {}'.format(self.filename))
 
-        encoded_exec_code, xor_key, layer1_enc = ta505pacer.get_exec_xor()
+        encoded_exec_code, xor_key, layer1_enc = ta505packer.get_exec_xor()
         if encoded_exec_code == 'Error':
             message('[ERROR] {}'.format(xor_key))
             return False
@@ -85,7 +85,7 @@ class TA505Unpacker:
                 except IndexError:
                     if not flag_sec_key:
                         flag_sec_key = True
-                        xor_key = ta505pacer.get_second_key()
+                        xor_key = ta505packer.get_second_key()
                         message('Using Secondary XOR KEY: {}'.format(hex(xor_key).upper()))
                     else:
                         raise Exception('Tried 2 XOR Keys None worked')
