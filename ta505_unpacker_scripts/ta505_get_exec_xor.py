@@ -230,7 +230,7 @@ class TA505x86Packer(TA505Packer):
         return struct.unpack('I', size_data[pos: pos + 4])[0]
 
     def get_second_key(self):
-        xor_key_addr, exec_addr, exec_size = self.find_exec_xor_addr_size()
+        xor_key, exec_addr, exec_size = self.find_exec_xor_addr_size()
         exec_addr += self.pe.OPTIONAL_HEADER.ImageBase - 1000
         for i in range(0, 4000):
             exec_addr -= 1
@@ -240,9 +240,9 @@ class TA505x86Packer(TA505Packer):
             except ValueError:
                 continue
 
-            mv1 = self.pe.get_data(rva=encoded_addr - 3, length=2)
-            mv2 = self.pe.get_data(rva=encoded_addr - 6, length=2)
-            mv3 = self.pe.get_data(rva=encoded_addr - 2, length=1)
+            mv1 = self.file_data[encoded_addr - 3: encoded_addr - 3 + 2]
+            mv2 = self.file_data[encoded_addr - 6: encoded_addr - 6 + 2]
+            mv3 = self.file_data[encoded_addr - 2: encoded_addr - 2 + 1]
             mv3 = int(mv3.encode('hex'), 16)
             if mv1 in ['\xC7\x45', '\xC7\x05'] or mv2 == '\xC7\x85' or mv3 in range(0x88, 0x8f):
                 exec_addr -= self.pe.OPTIONAL_HEADER.ImageBase
