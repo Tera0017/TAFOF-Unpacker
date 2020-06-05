@@ -203,7 +203,7 @@ class TA505x86Packer(TA505Packer):
                     exec_size = struct.unpack('I', opcodes[3: 3 + 4])[0]
                     search = struct.unpack('B', opcodes[2: 2 + 1])[0] + 4
                     search = struct.pack('B', search)
-                    data = self.pe.get_data(rule_addr, 250)
+                    data = self.pe.get_data(rule_addr, 500)
                     idx = data.index(search)
                     if data[idx-2: idx] == '\x89\x45':
                         data = data[7:idx]
@@ -215,7 +215,7 @@ class TA505x86Packer(TA505Packer):
                     elif data[idx-2: idx-1] == '\x89':
                         xor_key_addr = struct.unpack('I', data[idx-6: idx-2])[0]
                         xor_key = self.get_xor_key(xor_key_addr)
-                        executable_addr = self.fix_address(xor_key_addr + 8)
+                        executable_addr = self.fix_address(struct.unpack('I', self.pe.get_data(rule_addr - 4, 4))[0])
                     else:
                         continue
 
