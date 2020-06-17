@@ -26,8 +26,8 @@ rules_x86 = {
     '$code8': '{81 [2] ?? ?? 00 00 7? [10] 8A ?? ?? ?? ?? ?? 8? 0? EB}',
     # get size strict
     '$code9': '{C7 4? ?? ?? ?? 03 00}',
-    # get size open
-    '$code10': '{C7 4? ?? ?? ?? 0? 00}',
+    # get size strict 2
+    '$code10': '{C7 8? ?? ?? ?? FF ?? ?? 03 00}',
 
 }
 
@@ -197,20 +197,26 @@ class TA505x86Packer(TA505Packer):
         # gets size
         for rule in ['$code9', '$code10']:
             matches = self.match_rule(rule)
+            iddx = 0
             for match in matches:
                 try:
+                    if rule == '$code10':
+                        iddx = 3
                     opcodes = match.strings[0][2]
                     rule_addr = match.strings[0][0]
-                    exec_size = struct.unpack('I', opcodes[3: 3 + 4])[0]
+                    exec_size = struct.unpack('I', opcodes[3 + iddx: 3 + 4 + iddx])[0]
                     search = struct.unpack('B', opcodes[2: 2 + 1])[0] + 4
                     search = struct.pack('B', search)
                     data = self.pe.get_data(rule_addr, 500)
-                    reg = re.compile(r'\x89.{1}'+search+r'[\x00-\xEE]{1}')
-                    search = reg.findall(data)[0][:3]
+                    if rule == '$code10':
+                        reg = re.compile(r'\x89.{1}' + search)
+                        search = reg.findall(data)[0]
+                    else:
+                        reg = re.compile(r'\x89.{1}' + search + r'[\x00-\xEE]{1}')
+                        search = reg.findall(data)[0][:3]
                     idx = data.index(search)
                     if data[idx: idx+2] == '\x89\x45':
                         data = data[7:idx]
-                        search = '\xA1'
                         idx = data.index(search) + 1
                         xor_key_addr = struct.unpack('I', data[idx: idx + 4])[0]
                         xor_key = self.get_xor_key(xor_key_addr)
