@@ -136,7 +136,7 @@ $ python ta505_unpacker.py -uf tafof_silence.bin
 
 
 #### Requirements
-- yara-python
+- yara-python (latest test yara-python 4.0.1)
 - pefile
 - UPX
 
