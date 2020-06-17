@@ -217,6 +217,7 @@ class TA505x86Packer(TA505Packer):
                     idx = data.index(search)
                     if data[idx: idx+2] == '\x89\x45':
                         data = data[7:idx]
+                        search = '\xA1'
                         idx = data.index(search) + 1
                         xor_key_addr = struct.unpack('I', data[idx: idx + 4])[0]
                         xor_key = self.get_xor_key(xor_key_addr)
