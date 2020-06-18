@@ -221,7 +221,7 @@ class TA505x86Packer(TA505Packer):
                         idx = data.index(search) + 1
                         xor_key_addr = struct.unpack('I', data[idx: idx + 4])[0]
                         xor_key = self.get_xor_key(xor_key_addr)
-                        executable_addr = self.fix_address(xor_key_addr + 4)
+                        executable_addr = self.fix_address(struct.unpack('I', self.pe.get_data(rule_addr - 4, 4))[0])
                     elif data[idx: idx+1] == '\x89':
                         xor_key_addr = struct.unpack('I', data[idx-4: idx])[0]
                         xor_key = self.get_xor_key(xor_key_addr)
