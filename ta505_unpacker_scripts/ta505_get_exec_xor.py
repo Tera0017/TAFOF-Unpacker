@@ -123,15 +123,18 @@ class TA505x86Packer(TA505Packer):
         for rule in ['$code1', '$code2']:
             match = self.match_rule(rule)
             if match and len(match) == 1:
-                opcodes = match[0].strings[0][2]
-                size = struct.unpack('I', opcodes[1:1+4])[0]
-                encoded_code_addr = struct.unpack('I', opcodes[6:6+4])[0]
-                xor_key_addr = encoded_code_addr + size
-                executable_addr = xor_key_addr + 4
-                xor_key = self.get_xor_key(xor_key_addr)
-                exec_size = self.get_enc_size(executable_addr)
-                executable_addr = self.fix_address(executable_addr)
-                return xor_key, executable_addr, exec_size
+                try:
+                    opcodes = match[0].strings[0][2]
+                    size = struct.unpack('I', opcodes[1:1+4])[0]
+                    encoded_code_addr = struct.unpack('I', opcodes[6:6+4])[0]
+                    xor_key_addr = encoded_code_addr + size
+                    executable_addr = xor_key_addr + 4
+                    xor_key = self.get_xor_key(xor_key_addr)
+                    exec_size = self.get_enc_size(executable_addr)
+                    executable_addr = self.fix_address(executable_addr)
+                    return xor_key, executable_addr, exec_size
+                except:
+                    continue
         # gets encrypted code and adding its size get the exe enc code + xor key (rest Silence/Azorult/Miner)
         for rule in ['$code3']:
             match = self.match_rule(rule)
