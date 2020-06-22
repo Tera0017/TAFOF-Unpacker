@@ -209,11 +209,12 @@ class TA505x86Packer(TA505Packer):
                     search = struct.pack('B', search)
                     data = self.pe.get_data(rule_addr, 500)
                     if rule == '$code10':
-                        reg = re.compile(r'\x89.{1}' + search)
+                        reg = re.compile(r'\x89.' + re.escape(search))
                         search = reg.findall(data)[0]
                     else:
-                        reg = re.compile(r'\x89.{1}' + search + r'[\x00-\xEE]{1}')
+                        reg = re.compile(r'\x89.' + re.escape(search) + r'[\x00-\xEE]')
                         search = reg.findall(data)[0][:3]
+
                     idx = data.index(search)
                     if data[idx: idx+2] == '\x89\x45':
                         data = data[7:idx]
